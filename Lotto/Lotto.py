@@ -39,6 +39,8 @@ def statistic():
 
 if __name__ == '__main__':
     generateArray()
-    print(drawNumber())
+    min = 1
+    max = 45
+    number_picks = 6
     print(statistic())
 
