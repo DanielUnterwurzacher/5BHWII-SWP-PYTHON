@@ -1,16 +1,22 @@
 import random
-import numpy as np
 
 dict = {'Royal Flush':0,'Straight Flush':0,'Straße':0,'Flush':0,'Full House':0,'Paar':0,'Zwei Paare':0,'Drilling':0,'Vierling':0}
 dictPercentage = {'Royal Flush':0,'Straight Flush':0,'Straße':0,'Flush':0,'Full House':0,'Paar':0,'Zwei Paare':0,'Drilling':0,'Vierling':0}
+dictPercentageWiki = {'Royal Flush':'0.000154%','Straight Flush':'0.00139%','Straße':'0.3925%','Flush':'0.1965%','Full House':'0.1441%','Paar':'42.2569%','Zwei Paare':'4.7539%','Drilling':'2.1128%','Vierling':'0.0240%'}
+
+drawnSymbol = []
+drawnColor = []
 
 def draw():
     liste = []
-    for i in range(1,53):
+    for i in range(0,52):
         liste.append(i)
 
     for j in range(5):
         value = random.randrange(0, 52)
+        while value in liste[51:51-j]:
+            value = random.randrange(0, 52)
+
         liste[value], liste[51-j] = liste[51-j], liste[value]
 
     fiveCards = []
@@ -18,68 +24,83 @@ def draw():
         fiveCards.append(liste[47+x])
     return fiveCards
 
-drawnSymbol = []
-drawnColor = []
-
 def showCards(fiveCards):
     for i in range(5):
         drawnSymbol.append(fiveCards[i] % 13)
         drawnColor.append(fiveCards[i] // 13) #int division
-    #print(fiveCards)
-    #print(drawnSymbol)
-    #print(drawnColor)
     #0 = 2, ... 8 = 10, 9 = J, 10 = Q, 11 = K, 12 = A
     #0 = Farbe1, 1 = Farbe2, 2 = Farbe3, 3 = Farbe4
 
-
 def validate():
-    countPairs = 0
-    countDrilling = 0
+    countPair = 0
+    countTriplet = 0
     countQuadruplet = 0
+    straight = True
 
-    straight = False
+    drawnSymbol.sort()
+    for i in range(1, 5):
+        if drawnSymbol[i] != drawnSymbol[i - 1] + 1:
+            straight = False
 
-    arr1 = np.array(drawnSymbol)
-    arr2 = np.array(drawnColor)
+    result = True
+    for a in drawnColor:
+        if drawnColor[0] != a:
+            result = False
 
-    arr1.sort()
-    if arr1[1] == arr1[0]+1:
-        if arr1[2] == arr1[1]+1:
-            if arr1[3] == arr1[2] + 1:
-                if arr1[4] == arr1[3] + 1:
-                    straight = True
-
-    result = np.all(arr2 == arr2[0])
     if result and straight:
-        if 11 in arr1 and 12 in arr1:
-            dict['Royal Flush'] +=1
+        if 11 in drawnSymbol and 12 in drawnSymbol:
+            return 'Royal Flush'
         else:
-            dict['Straight Flush'] += 1
+            return 'Straight Flush'
     elif straight:
-        dict['Straße'] += 1
-    elif result:
-        dict['Flush'] += 1
+        return 'Straße'
 
-    for i in arr1:
-        count = (arr1 == i).sum()
+    for i in drawnSymbol:
+        count = drawnSymbol.count(i)
         if count == 2:
-            countPairs +=1
-        if count == 3:
-            countDrilling +=1
-        if count == 4:
-            countQuadruplet +=1
+            countPair += 1
+        elif count == 3:
+            countTriplet += 1
+        elif count == 4:
+            countQuadruplet += 1
 
-    if countPairs == 2:
-        if countDrilling == 3:
-            dict['Full House'] += 1
+    if countPair == 2:
+        if countTriplet == 3:
+            return 'Full House'
+        elif result:
+            return 'Flush'
         else:
-            dict['Paar'] += 1
-    elif countPairs == 4:
-        dict['Zwei Paare'] += 1
-    elif countDrilling == 3:
-        dict['Drilling'] += 1
+            return 'Paar'
+    elif result:
+        return 'Flush'
+    elif countPair == 4:
+        return 'Zwei Paare'
+    elif countTriplet == 3:
+        return 'Drilling'
     elif countQuadruplet == 4:
+        return 'Vierling'
+
+    return ''
+
+def countCombinations(combination):
+    if combination == 'Paar':
+        dict['Paar'] += 1
+    elif combination == 'Zwei Paare':
+        dict['Zwei Paare'] += 1
+    elif combination == 'Drilling':
+        dict['Drilling'] += 1
+    elif combination == 'Vierling':
         dict['Vierling'] += 1
+    elif combination == 'Straße':
+        dict['Straße'] += 1
+    elif combination == 'Flush':
+        dict['Flush'] += 1
+    elif combination == 'Full House':
+        dict['Full House'] += 1
+    elif combination == 'Straight Flush':
+        dict['Straight Flush'] += 1
+    elif combination == 'Royal Flush':
+        dict['Royal Flush'] += 1
 
 def percentage(list,drawTimes):
     dictPercentage['Royal Flush'] = str((list['Royal Flush']*100)/drawTimes) + '%'
@@ -95,9 +116,15 @@ def percentage(list,drawTimes):
 
 if __name__ == '__main__':
     drawTimes = input("Wie oft wollen Sie ziehen?")
+
     for i in range(int(drawTimes)):
+        drawnSymbol=[]
+        drawnColor=[]
         showCards(draw())
-        validate()
+        countCombinations(validate())
     print(dict)
+    print('Berechnet:')
     percentage(dict,int(drawTimes))
+    print('Recherchiert:')
+    print(dictPercentageWiki)
 
