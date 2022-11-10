@@ -14,7 +14,7 @@ def draw():
 
     for j in range(5):
         value = random.randrange(0, 52)
-        while value in liste[51:51-j]:
+        while value in liste[51-j:51]:
             value = random.randrange(0, 52)
 
         liste[value], liste[51-j] = liste[51-j], liste[value]
