@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <title>Game stats</title>
+</head>
+<body>
+<center>
+<table class="table table-hover" style="width:800px; margin-top:200px;">
+  <thead>
+    <tr>
+      <th scope="col">Schere</th>
+      <th scope="col">Stein</th>
+      <th scope="col">Papier</th>
+        <th scope="col">Echse</th>
+        <th scope="col">Spock</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for s in stats %}
+    <tr>
+      <td>{{s["schere"]}}</td>
+      <td>{{s["stein"]}}</td>
+      <td>{{s["papier"]}}</td>
+        <td>{{s["echse"]}}</td>
+        <td>{{s["spock"]}}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+
+
+    <table class="table table-hover" style="width:800px; padding-top:200px;">
+  <thead>
+    <tr>
+      <th scope="col">Siege Spieler</th>
+      <th scope="col">Unentschieden</th>
+      <th scope="col">Siege Computer</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for sp in stats %}
+    <tr>
+      <td>{{sp["spielerW"]}}</td>
+      <td>{{sp["unentschieden"]}}</td>
+      <td>{{sp["compW"]}}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+    </center>
+</body>
+</html>

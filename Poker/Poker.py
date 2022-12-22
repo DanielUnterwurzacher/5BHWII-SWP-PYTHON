@@ -27,7 +27,7 @@ def draw():
 def showCards(fiveCards):
     for i in range(5):
         drawnSymbol.append(fiveCards[i] % 13)
-        drawnColor.append(fiveCards[i] // 13) #int division
+        drawnColor.append(fiveCards[i] // 13)
     #0 = 2, ... 8 = 10, 9 = J, 10 = Q, 11 = K, 12 = A
     #0 = Farbe1, 1 = Farbe2, 2 = Farbe3, 3 = Farbe4
 
@@ -114,17 +114,18 @@ def percentage(list,drawTimes):
     dictPercentage['Vierling'] = str((list['Vierling'] * 100) / drawTimes) + '%'
     print(dictPercentage)
 
+
 if __name__ == '__main__':
     drawTimes = input("Wie oft wollen Sie ziehen?")
 
     for i in range(int(drawTimes)):
-        drawnSymbol=[]
-        drawnColor=[]
+        drawnSymbol = []
+        drawnColor = []
         showCards(draw())
         countCombinations(validate())
     print(dict)
     print('Berechnet:')
-    percentage(dict,int(drawTimes))
+    percentage(dict, int(drawTimes))
     print('Recherchiert:')
     print(dictPercentageWiki)
 
