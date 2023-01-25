@@ -32,7 +32,7 @@ class OwnList:
         lastElement = self.getLast()
         lastElement.setNextElement(newElement)
 
-    def len(self):
+    def __len__(self):
         length = 0
         help = self.first
         if self.first is None:
@@ -74,7 +74,7 @@ def main():
     l.delete(44)
     
     print("Länge der Liste: ")
-    print(l.len())
+    print(len(l))
     i = l.getAllElements()
     print("Liste: ")
     print(i)
