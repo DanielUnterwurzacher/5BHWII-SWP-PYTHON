@@ -1,36 +1,34 @@
 import random
+from list import ListElement
 
-class ListElement:
-    def __init__(self,obj):
-        self.obj = obj
-        self.nextElem = None
-
-    def setNextElement(self,next):
-        self.nextElem = next
-
-    def getNextElement(self):
-        return self.nextElem
+class DoubleListElement(ListElement):
+    def __init__(self, obj):
+        super().__init__(obj)
+        self.prevElem = None
     
-    def getObject(self):
-        return self.obj
+    def setPreviousElement(self,previous):
+        self.prevElem = previous
 
-class OwnList:
-    first = ListElement(None)
+    def getPreviousElement(self):
+        return self.prevElem   
+    
+class DoubleList():
+    first = DoubleListElement(None)
+    tail = DoubleListElement(None)
 
     def getLast(self):
-        i = self.first
-        while i.getNextElement() is not None:
-            i = i.getNextElement()
-        return i
+        return self.tail.getObject()
 
     def add(self, obj):
-        newElement = ListElement(obj)
-        if self.first.getObject() is None:
+        newElement = DoubleListElement(obj)
+        if self.tail.getObject() is None:
             self.first = newElement
+            self.tail = newElement
             return
-        lastElement = self.getLast()
-        lastElement.setNextElement(newElement)
-
+        self.tail.setNextElement(newElement)
+        self.tail.setPreviousElement(self.tail)
+        self.tail = self.tail.getNextElement()
+    
     def __len__(self):
         length = 0
         help = self.first
@@ -40,7 +38,7 @@ class OwnList:
             length += 1
             help = help.getNextElement()
         return length
-
+    
     def getAllElements(self):
         help = self.first
         allElements = '['
@@ -65,6 +63,7 @@ class OwnList:
                     el.setNextElement(next.getNextElement())
                 else:
                     el.setNextElement(None)
+                el.setPreviousElement(next)
             el = el.getNextElement()
             if el == None:
                 return
@@ -82,7 +81,7 @@ class OwnList:
         for i in range(int(index)):
             el = el.getNextElement()
         return el.getObject()
-
+    
     def getIndex(self,obj):
         el = self.first
         i = 0
@@ -101,7 +100,7 @@ class OwnList:
     def isEmpty(self):
         if self.first.getObject() is None:
             return True
-
+    
     def addByIndex(self,index,obj): 
         obj = ListElement(obj)
         if index > len(self):
@@ -111,37 +110,38 @@ class OwnList:
         while current is not None:
             if count == index-1:
                 current.nextElem, obj.nextElem = obj, current.nextElem
+                obj.prevElem = current
                 break
             current = current.nextElem
             count +=1
 
 def main():
-    l = OwnList()
+    d = DoubleList()
 
     for i in range(100):
-        l.add(random.randint(0,10))
+        d.add(random.randint(0,10))
 
-    i = l.getAllElements()
+    i = d.getAllElements()
     print("Liste: ")
     print(i)
     
     print()
     auswahl = input("Welchen Wert möchtest du löschen? ")
-    l.delete(int(auswahl))
+    d.delete(int(auswahl))
 
     print()
-    a = l.getAllElements()
+    a = d.getAllElements()
     print("Liste: ")
     print(a)
     
     print()
     print("Länge der Liste: ")
-    print(len(l))
+    print(len(d))
     
     print()
     print("getItem: ")
     find = input("Welchen Wert möchtest du finden? ")
-    if l.getItem(find) is True:
+    if d.getItem(find) is True:
         print("Ist Bestandteil der Liste")
     else:
         print("Ist nicht Bestandteil der Liste")
@@ -149,21 +149,21 @@ def main():
     print()
     print("getItemByIndex: ")
     find1 = input("Index von zu holendem Item: ")
-    print(l.getItemByIndex(find1))
+    print(d.getItemByIndex(find1))
 
     print()
     print("getIndex: ")
     find2 = input("Item: ")
-    print(l.getIndex(int(find2)))
+    print(d.getIndex(int(find2)))
 
     print()
     print("getStart and getLast: ")
-    print(l.getStart())
-    print(l.getLast())
+    print(d.getStart())
+    print(d.getLast())
 
     print()
     print("isEmpty: ")
-    if l.isEmpty() is True:
+    if d.isEmpty() is True:
         print("leere Liste")
     else:
         print("befüllte Liste")
@@ -172,8 +172,8 @@ def main():
     print("addByIndex: ")
     find3 = input("An welchen Index möchtest du das Item einfügen? ")
     find4 = input("Welches Item möchtest du einfügen? ")
-    l.addByIndex(int(find3),int(find4))
-    y = l.getAllElements()
+    d.addByIndex(int(find3),int(find4))
+    y = d.getAllElements()
     print("Liste: ")
     print(y)
 
