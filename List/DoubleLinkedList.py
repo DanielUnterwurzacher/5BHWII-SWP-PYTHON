@@ -75,6 +75,7 @@ class DoubleList():
             if le.getObject() == obj:
                 return True
             le = le.getNextElement()
+
     
     def getItemByIndex(self,index):
         el = self.first

@@ -1,12 +1,12 @@
                     Linked List         Double Linked List          ArrayList
-getLast                 n                       1                       1 (n wenn durchiteriert wird)
+getLast                 n                       1                       1
 add                     n                       1                       n
-len                     n                       n                       n
+len                     n                       n                       1
 getAllElements          n                       n                       n
 delete                  n                       n                       n
 getItem                 n                       n                       n
-getItemByIndex          n                       n                       1 (n wenn durchiteriert wird)
+getItemByIndex          n                       n                       1
 getIndex                n                       n                       n
 getStart                1                       1                       1
 isEmpty                 1                       1                       1
-addByIndex              n                       1                       1 (n wenn durchiteriert wird)
+addByIndex              n                       n                       n
